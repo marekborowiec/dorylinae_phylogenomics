@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/89310395.svg)](https://zenodo.org/badge/latestdoi/89310395)
+
 This is code used in a phylogenomic study of the ant subfamily Dorylinae. Please consider citing it if you are using the scripts:
 
 @@@
