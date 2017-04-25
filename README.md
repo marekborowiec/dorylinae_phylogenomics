@@ -4,7 +4,7 @@ This is code used in a phylogenomic study of the ant subfamily Dorylinae. Please
 
 Structure:
 
-```
+
 .
 ├── aln_bin_by_rate.py 			# concatenate loci by rate into n bins
 ├── aln_choose.py 				# sample n loci across rate range
@@ -16,5 +16,3 @@ Structure:
 ├── significance_tests.R 		# testing locus properties in matrices
 ├── tree_props.R 				# avg. bootstrap, branch length, saturation, plotting gene trees
 └── upp_script.sh 				# UPP commands used for alignment of each locus
-
-```
