@@ -1,6 +1,9 @@
 # disable scientific notation
 options(scipen=999)
 
+library(ggplot2)
+library(reshape)
+
 # set working directory to where 'all-loci-min114-summary.txt' is
 setwd("/media/mlb/Seagate Backup Plus Drive/MLB_UCEs/For_Dryad/Tabular_data/")
 
@@ -35,11 +38,9 @@ hboot_subset <- all_data[high_boot, ]
 
 head(all_data)
 
-all_data$Homogeneous == T && all_data$Rate_bin_no == 1
-
 ### T-TESTS ###
 
-# RCVF
+# RCFV
 
 slow_rcfv <- slow_subset$RCFV
 non_slow_rcfv <- non_slow_subset$RCFV
@@ -87,3 +88,42 @@ rat_slow_non_sat
 
 t.test(slow_sat, non_slow_sat, alternative="greater", var.equal=T)
 t.test(slow_sat, hboot_sat, alternative="greater", var.equal=T)
+
+### Plotting RCFV and saturation ###
+
+# Get only data needed and transform by duplicating records for relevant loci
+for_melting <- all_data[c("RCFV", "Slope", "Rate_bin_no", "Homogeneous", "High_boot")]
+names(for_melting) <- c("RCFV", "Slope", "slow_evolving", "homogeneous", "high_bootstrap")
+# Transform all rate bins except first into zeros
+for_melting$slow_evolving[for_melting$slow_evolving != 1] <- 0
+# Convert logical values into zeros and ones
+for_melting$homogeneous <- as.numeric(as.logical(for_melting$homogeneous))
+for_melting$high_bootstrap <- as.numeric(as.logical(for_melting$high_bootstrap))
+# Reshape and multiply records
+melted <- melt(for_melting, id.var=c("RCFV", "Slope"))
+melted <- melted[melted$value != 0,]
+names(melted) <- c("RCFV", "Regression_slope", "Loci", "value")
+
+# open pdf device
+cairo_pdf(filename="rcfv.pdf",    # create SVG file       
+          width = 8,        
+          height = 6,
+          pointsize = 12)  
+
+ggplot(melted, aes(x=Loci, y=RCFV, fill=Loci)) + 
+  geom_boxplot() + guides(fill=F)
+
+# close pdf device
+dev.off()
+
+# open pdf device
+cairo_pdf(filename="saturation.pdf",    # create SVG file       
+          width = 8,        
+          height = 6,
+          pointsize = 12)  
+
+ggplot(melted, aes(x=Loci, y=Regression_slope, fill=Loci)) + 
+  geom_boxplot() + guides(fill=F)
+
+# close pdf device
+dev.off()
