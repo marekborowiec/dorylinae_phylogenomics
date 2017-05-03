@@ -2,7 +2,7 @@
 
 This is code used in a phylogenomic study of the ant subfamily Dorylinae. Please consider citing it if you are using the scripts:
 
-@@@
+Borowiec M. L. 2017. Convergent evolution of the army ant syndrome and congruence in big-data phylogenetics. bioRxiv.
 
 Structure:
 
